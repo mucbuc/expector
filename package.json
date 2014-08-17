@@ -1,0 +1,24 @@
+{
+  "name": "expector",
+  "version": "0.0.0",
+  "description": "node, test, emitter",
+  "main": "expector.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mucbuc/expector.git"
+  },
+  "keywords": [
+    "node",
+    "test",
+    "emitter"
+  ],
+  "author": "mucbuc",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mucbuc/expector/issues"
+  },
+  "homepage": "https://github.com/mucbuc/expector"
+}
