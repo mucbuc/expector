@@ -22,6 +22,7 @@ function Expector() {
       console.log( 'event is expected not to occur: ', event );
       assert( false );
     } );
+    return instance;
   };
 
   instance.expect = function( event, code ) {
@@ -29,6 +30,7 @@ function Expector() {
       instance.once( event, check );
     }
     expectations.push( { event: event, code: code } );
+    return instance;
 
     function check( code ) {
       var expectation = expectations[0];
