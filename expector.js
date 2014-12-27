@@ -25,18 +25,19 @@ function Expector() {
     return instance;
   };
 
-  instance.expect = function( event, code, counter ) {
+  instance.repeat = function( counter ) {
+    assert( typeof counter === 'number' );
+    while(counter--) {
+      expectations.push( expectations[ expectations.length - 1 ] );
+    }
+    return instance;
+  };
+
+  instance.expect = function( event, code ) {
     if (!expectations.length) {
       instance.once( event, check );
     }
-    if (Number.isInteger(counter)) {
-      while (counter--) {
-        expectations.push( { event: event, code: code } );
-      }
-    }
-    else {
-      expectations.push( { event: event, code: code } );
-    }
+    expectations.push( { event: event, code: code } );
     return instance;
 
     function check( code ) {
