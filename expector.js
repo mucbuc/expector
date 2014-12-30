@@ -10,6 +10,10 @@ function Expector() {
 
   EventEmitter.call( instance );
 
+  instance.__defineGetter__( 'expectations', function() {
+    return expectations; 
+  });
+
   instance.check = function() {
     if (expectations.length) {
       console.log( 'expected events did not occur: ', expectations );
@@ -75,4 +79,20 @@ function Expector() {
 
 util.inherits( Expector, EventEmitter );
 
+function SeqExpector() {
+  var instance = this
+    , pEmit; 
+
+  Expector.call( instance );
+
+  pEmit = this.emit;
+  this.emit = function() {
+    assert.deepEqual( this.expectations[0].event, arguments[0] );
+    pEmit.apply( this, arguments ); 
+  };
+}
+
+util.inherits( SeqExpector, Expector );
+
 exports.Expector = Expector;
+exports.SeqExpector = SeqExpector;
