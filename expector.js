@@ -87,6 +87,7 @@ function SeqExpector() {
 
   pEmit = this.emit;
   this.emit = function() {
+    assert( this.expectations.length );
     assert.deepEqual( this.expectations[0].event, arguments[0] );
     pEmit.apply( this, arguments ); 
   };
