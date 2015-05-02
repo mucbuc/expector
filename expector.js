@@ -93,6 +93,9 @@ function SeqExpector() {
 
   pEmit = this.emit;
   this.emit = function() {
+    if (typeof arguments[0] !== 'string') {
+      arguments[0] = JSON.stringify( arguments[0] );
+    }
     assert( this.expectations.length );
     assert.deepEqual( this.expectations[0].event, arguments[0] );
     pEmit.apply( this, arguments ); 
