@@ -22,7 +22,7 @@ function Expector() {
   }; 
 
   instance.expectNot = function( event ) {
-    event = JSON.stringify( event );
+    assert( typeof event === 'string' );
     instance.on( event, function() {
       console.log( 'event is expected not to occur: ', event );
       assert( false );
@@ -39,7 +39,7 @@ function Expector() {
   };
 
   instance.expect = function( event, code ) {
-    event = JSON.stringify( event );
+    assert( typeof event === 'string' );
     if (!expectations.length) {
       instance.once( event, check );
     }
