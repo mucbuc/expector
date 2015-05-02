@@ -1,6 +1,6 @@
 {
   "name": "expector",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "node, test, emitter",
   "main": "expector.js",
   "scripts": {
