@@ -1,25 +1,23 @@
 expector
 ========
-
 node, test, emitter
-
-Expector example
-
+#####Expector
+```
 var e = new require('expector').Expector();
 e.expect( 'a' );
 e.expect( 'b' );
 e.emit( 'b' );
 e.check(); // => fails, missing 'a' event
-
-
-SeqExpector
-
+```
+#####SeqExpector
+```
 var e = new require('expector').SeqExpector();
 e.expect( 'first' );
 e.expect( 'second' );
 e.emit( 'second' ); // => fails, expecting first
-
-Custom asserter
-
+```
+#####Custom asserter
+```
 var e = new SeqExpector(DIY.assert);
 e.check(); // => fails, no expectations
+```
