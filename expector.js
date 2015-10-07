@@ -1,24 +1,26 @@
 #!/usr/bin/env node
 
-var assert = require( 'assert' )
-  , EventEmitter = require( 'events' ).EventEmitter
+var EventEmitter = require( 'events' ).EventEmitter
   , util = require( 'util' );
 
-function Expector() {
+function Expector(assert) {
   var expectations = []
     , instance = this;
 
   EventEmitter.call( instance );
+
+  if (typeof assert === 'undefined') {
+    assert = require( 'assert' );
+  }
 
   instance.__defineGetter__( 'expectations', function() {
     return expectations; 
   });
 
   instance.check = function() {
-    if (expectations.length) {
-      console.log( 'expected events did not occur: ', expectations );
-    }
-    assert.equal( expectations.length, 0 );
+    var message = 'met all expectations: ';
+    message += util.inspect( expectations ); 
+    assert.equal( expectations.length, 0, message );
   }; 
 
   instance.expectNot = function( event ) {
@@ -26,14 +28,13 @@ function Expector() {
       event = JSON.stringify( event );
     }
     instance.on( event, function() {
-      console.log( 'event is expected not to occur: ', event );
-      assert( false );
+      assert.fail( 'event is expected not to occur: ' + event );
     } );
     return instance;
   };
 
   instance.repeat = function( counter ) {
-    assert( typeof counter === 'number' );
+    assert.assert( typeof counter === 'number' );
     while(counter--) {
       expectations.push( expectations[ expectations.length - 1 ] );
     }
@@ -57,7 +58,7 @@ function Expector() {
       if (expectation.code != undefined) {
 
         if (code instanceof Array) {
-          assert( expectation.code instanceof Array );
+          assert.assert( expectation.code instanceof Array );
 
           code.forEach( function( element, index) {
             code[index] = element.trim();
@@ -85,15 +86,18 @@ function Expector() {
 
 util.inherits( Expector, EventEmitter );
 
-function SeqExpector() {
+function SeqExpector(assert) {
   var instance = this
     , pEmit; 
 
-  Expector.call( instance );
+  Expector.call( instance, assert );
 
   pEmit = this.emit;
   this.emit = function() {
-    assert( this.expectations.length );
+    if (typeof arguments[0] !== 'string') {
+      arguments[0] = JSON.stringify( arguments[0] );
+    }
+    assert.assert( this.expectations.length );
     assert.deepEqual( this.expectations[0].event, arguments[0] );
     pEmit.apply( this, arguments ); 
   };
