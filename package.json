@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/mucbuc/expector/issues"
   },
-  "homepage": "https://github.com/mucbuc/expector"
+  "homepage": "https://github.com/mucbuc/expector",
+  "dependencies": {
+    "tape": "*"
+  }
 }
