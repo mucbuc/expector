@@ -3,11 +3,15 @@
 var EventEmitter = require( 'events' ).EventEmitter
   , util = require( 'util' );
 
-function Expector(tape) {
+function Expector(assert) {
   var expectations = []
     , instance = this;
 
   EventEmitter.call( instance );
+
+  if (typeof assert === 'undefined') {
+    assert = require( 'assert' );
+  }
 
   instance.__defineGetter__( 'expectations', function() {
     return expectations; 
@@ -16,8 +20,7 @@ function Expector(tape) {
   instance.check = function() {
     var message = 'met all expectations: ';
     message += util.inspect( expectations ); 
-    tape.equal( expectations.length, 0, message );
-    tape.end();
+    assert.equal( expectations.length, 0, message );
   }; 
 
   instance.expectNot = function( event ) {
@@ -25,13 +28,13 @@ function Expector(tape) {
       event = JSON.stringify( event );
     }
     instance.on( event, function() {
-      tape.fail( 'event is expected not to occur: ' + event );
+      assert.fail( 'event is expected not to occur: ' + event );
     } );
     return instance;
   };
 
   instance.repeat = function( counter ) {
-    tape.assert( typeof counter === 'number' );
+    assert.assert( typeof counter === 'number' );
     while(counter--) {
       expectations.push( expectations[ expectations.length - 1 ] );
     }
@@ -55,22 +58,22 @@ function Expector(tape) {
       if (expectation.code != undefined) {
 
         if (code instanceof Array) {
-          tape.assert( expectation.code instanceof Array );
+          assert.assert( expectation.code instanceof Array );
 
           code.forEach( function( element, index) {
             code[index] = element.trim();
             if (index == code.length - 1) {
               var expected = expectation.code.toString()
                 , received = code.toString();
-              tape.deepEqual( received, expected );
+              assert.deepEqual( received, expected );
             }
           } );
         }
         else if (typeof code === 'string') {
-          tape.deepEqual( code.trim(), expectation.code.trim() );
+          assert.deepEqual( code.trim(), expectation.code.trim() );
         }
         else {
-          tape.deepEqual( JSON.stringify(code), JSON.stringify( expectation.code ) );
+          assert.deepEqual( JSON.stringify(code), JSON.stringify( expectation.code ) );
         }
       }
 
@@ -83,19 +86,19 @@ function Expector(tape) {
 
 util.inherits( Expector, EventEmitter );
 
-function SeqExpector(tape) {
+function SeqExpector(assert) {
   var instance = this
     , pEmit; 
 
-  Expector.call( instance, tape );
+  Expector.call( instance, assert );
 
   pEmit = this.emit;
   this.emit = function() {
     if (typeof arguments[0] !== 'string') {
       arguments[0] = JSON.stringify( arguments[0] );
     }
-    tape.assert( this.expectations.length );
-    tape.deepEqual( this.expectations[0].event, arguments[0] );
+    assert.assert( this.expectations.length );
+    assert.deepEqual( this.expectations[0].event, arguments[0] );
     pEmit.apply( this, arguments ); 
   };
 }
