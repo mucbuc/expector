@@ -9,9 +9,7 @@ function Expector(assert) {
 
   EventEmitter.call( instance );
 
-  if (typeof assert === 'undefined') {
-    assert = require( 'assert' );
-  }
+  assert = makeAssert(assert);
 
   instance.__defineGetter__( 'expectations', function() {
     return expectations; 
@@ -90,6 +88,10 @@ function SeqExpector(assert) {
   var instance = this
     , pEmit; 
 
+  assert = makeAssert(assert);
+
+  console.log( assert );
+
   Expector.call( instance, assert );
 
   pEmit = this.emit;
@@ -101,6 +103,14 @@ function SeqExpector(assert) {
     assert.deepEqual( this.expectations[0].event, arguments[0] );
     pEmit.apply( this, arguments ); 
   };
+}
+
+function makeAssert(assert) {
+  if (typeof assert === 'undefined') {
+    assert = require( 'assert' );
+    assert.assert = assert;
+  } 
+  return assert;
 }
 
 util.inherits( SeqExpector, Expector );

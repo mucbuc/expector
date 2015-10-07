@@ -18,4 +18,11 @@ test( 'assert test', function(t) {
 	expector.check();
 	t.pass();
 	t.end();
-})
+});
+
+// test( 'test example', function(t) {
+// 	var a = new e.SeqExpector();
+// 	a.expect( 'first' );
+// 	a.expect( 'second' );
+// 	a.emit( 'second' ); // => fails, expecting first
+// });
