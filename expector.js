@@ -19,6 +19,7 @@ function Expector(assert) {
     var message = 'met all expectations: ';
     message += util.inspect( expectations ); 
     assert.equal( expectations.length, 0, message );
+    assert.end(); 
   }; 
 
   instance.expectNot = function( event ) {
@@ -63,7 +64,7 @@ function Expector(assert) {
             if (index == code.length - 1) {
               var expected = expectation.code.toString()
                 , received = code.toString();
-              assert.deepEqual( received, expected );
+              assert.deepEqual( received, expected ); 
             }
           } );
         }
@@ -109,6 +110,7 @@ function makeAssert(assert) {
   if (typeof assert === 'undefined') {
     assert = require( 'assert' );
     assert.assert = assert;
+    assert.end = function() {};
   } 
   return assert;
 }

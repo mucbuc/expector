@@ -8,7 +8,6 @@ test( 'smoke test', function(t) {
 	expector.expect( 'hello' ); 
 	expector.emit( 'hello' ); 
 	expector.check();
-	t.end();
 });
 
 test( 'assert test', function(t) {
