@@ -1,6 +1,6 @@
 {
   "name": "expector",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "node, test, emitter",
   "main": "expector.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "emitter"
   ],
   "author": "mucbuc",
-  "license": "MIT",
+  "license": "GPL-2.0",
   "bugs": {
     "url": "https://github.com/mucbuc/expector/issues"
   },

@@ -91,8 +91,6 @@ function SeqExpector(assert) {
 
   assert = makeAssert(assert);
 
-  console.log( assert );
-
   Expector.call( instance, assert );
 
   pEmit = this.emit;
