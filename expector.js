@@ -5,11 +5,17 @@ var EventEmitter = require( 'events' ).EventEmitter
 
 function Expector(assert) {
   var expectations = []
-    , instance = this;
+    , instance = this
+    , pEmit;
 
   EventEmitter.call( instance );
-
+  pEmit = instance.emit;
   assert = makeAssert(assert);
+
+  instance.emit = function() {
+    pEmit.apply( instance, arguments );
+    return instance;
+  };
 
   instance.__defineGetter__( 'expectations', function() {
     return expectations; 
@@ -93,14 +99,15 @@ function SeqExpector(assert) {
 
   Expector.call( instance, assert );
 
-  pEmit = this.emit;
-  this.emit = function() {
+  pEmit = instance.emit;
+  instance.emit = function() {
     if (typeof arguments[0] !== 'string') {
       arguments[0] = JSON.stringify( arguments[0] );
     }
-    assert.assert( this.expectations.length );
-    assert.deepEqual( this.expectations[0].event, arguments[0] );
-    pEmit.apply( this, arguments ); 
+    assert.assert( instance.expectations.length );
+    assert.deepEqual( instance.expectations[0].event, arguments[0] );
+    pEmit.apply( instance, arguments ); 
+    return instance;
   };
 }
 

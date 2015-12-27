@@ -4,24 +4,37 @@ var e = require( '../expector' )
   , test = require( 'tape' );
   
 test( 'smoke test', function(t) {
-	var expector = new e.Expector(t); 
-	expector.expect( 'hello' ); 
-	expector.emit( 'hello' ); 
-	expector.check();
+  var expector = new e.Expector(t); 
+  expector.expect( 'hello' ); 
+  expector.emit( 'hello' ); 
+  expector.check();
 });
 
 test( 'assert test', function(t) {
-	var expector = new e.Expector(); 
-	expector.expect( 'hello' ); 
-	expector.emit( 'hello' ); 
-	expector.check();
-	t.pass();
-	t.end();
+  var expector = new e.Expector(); 
+  expector.expect( 'hello' ); 
+  expector.emit( 'hello' ); 
+  expector.check();
+  t.pass();
+  t.end();
 });
 
-// test( 'test example', function(t) {
-// 	var a = new e.SeqExpector();
-// 	a.expect( 'first' );
-// 	a.expect( 'second' );
-// 	a.emit( 'second' ); // => fails, expecting first
-// });
+test( 'test emit return', function(t) {
+  var expector = new e.Expector(t);
+  expector.expect('hello').emit('hello').check();
+});
+
+test( 'test example', function(t) {
+  var a = new e.SeqExpector();
+  a.expect( 'first' );
+  a.expect( 'second' );
+  try {
+    a.emit( 'second' ); // => fails, expecting first
+    t.fail();
+    t.end();
+  }
+  catch(err) { 
+    t.pass();
+    t.end();
+  };
+});
