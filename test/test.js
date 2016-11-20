@@ -39,7 +39,7 @@ test( 'test example', function(t) {
   };
 });
 
-test.only( 'test object stability', function(t) {
+test( 'test object stability', function(t) {
   var expector = new e.Expector(t);
   expector.expect({ a: 'h', b: 2}).emit({ b: 2, a: 'h'}).check();
 });
