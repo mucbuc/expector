@@ -1,6 +1,6 @@
 {
   "name": "expector",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "node, test, emitter",
   "main": "expector.js",
   "scripts": {
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/mucbuc/expector",
   "dependencies": {
-    "tape": "*"
+    "tape": "*",
+    "json-stable-stringify": "*"
   }
 }
