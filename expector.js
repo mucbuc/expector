@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 var EventEmitter = require( 'events' ).EventEmitter
-  , util = require( 'util' );
+  , util = require( 'util' )
+  , stringify = require( 'json-stable-stringify' );
 
 function Expector(assert) {
   var expectations = []
@@ -13,6 +14,13 @@ function Expector(assert) {
   assert = makeAssert(assert);
 
   instance.emit = function() {
+
+    for (var i = 0; i < arguments.length; ++i) {
+      if (typeof arguments[0] !== 'string') {
+        arguments[0] = stringify( arguments[0] ); 
+      }
+    }
+
     pEmit.apply( instance, arguments );
     return instance;
   };
@@ -30,7 +38,7 @@ function Expector(assert) {
 
   instance.expectNot = function( event ) {
     if (typeof event !== 'string') {
-      event = JSON.stringify( event );
+      event = stringify( event );
     }
     instance.on( event, function() {
       assert.fail( 'event is expected not to occur: ' + event );
@@ -48,7 +56,7 @@ function Expector(assert) {
 
   instance.expect = function( event, code ) {
     if (typeof event !== 'string') {
-      event = JSON.stringify( event );
+      event = stringify( event );
     }
     if (!expectations.length) {
       instance.once( event, check );
@@ -78,7 +86,7 @@ function Expector(assert) {
           assert.deepEqual( code.trim(), expectation.code.trim() );
         }
         else {
-          assert.deepEqual( JSON.stringify(code), JSON.stringify( expectation.code ) );
+          assert.deepEqual( stringify(code), stringify( expectation.code ) );
         }
       }
 
@@ -102,7 +110,7 @@ function SeqExpector(assert) {
   pEmit = instance.emit;
   instance.emit = function() {
     if (typeof arguments[0] !== 'string') {
-      arguments[0] = JSON.stringify( arguments[0] );
+      arguments[0] = stringify( arguments[0] );
     }
     assert.assert( instance.expectations.length );
     assert.deepEqual( instance.expectations[0].event, arguments[0] );

@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/mucbuc/expector",
   "dependencies": {
-    "tape": "*"
+    "tape": "*",
+    "json-stable-stringify": "*"
   }
 }
