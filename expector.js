@@ -75,7 +75,7 @@ function Expector(assert) {
         if (code instanceof Array) {
           assert.assert( expectation.code instanceof Array );
 
-          code.forEach( function( element, index) {
+          code.forEach( ( element, index) => {
             code[index] = element.trim();
             if (index == code.length - 1) {
               var expected = expectation.code.toString()
