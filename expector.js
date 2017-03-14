@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+'use strict';
+
 var EventEmitter = require( 'events' ).EventEmitter
   , util = require( 'util' )
   , stringify = require( 'json-stable-stringify' );
@@ -25,7 +27,7 @@ function Expector(assert) {
     return instance;
   };
 
-  instance.__defineGetter__( 'expectations', function() {
+  instance.__defineGetter__( 'expectations', () => {
     return expectations; 
   });
 
