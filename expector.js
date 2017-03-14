@@ -42,7 +42,7 @@ function Expector(assert) {
     if (typeof event !== 'string') {
       event = stringify( event );
     }
-    instance.on( event, function() {
+    instance.on( event, () => {
       assert.fail( 'event is expected not to occur: ' + event );
     } );
     return instance;
